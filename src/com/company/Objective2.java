@@ -16,16 +16,17 @@ public class Objective2 {
         System.out.println("If my guess is correct, say \"correct\".");
 
         while (true) {
-            System.out.println("(Guess #" + iteration + ") Is the number " + guess + "?");
+            System.out.print("(Guess #" + iteration + ") Is the number " + guess + "? ");
             String answer = input.nextLine();
             iteration++;
-            double difference = range / Math.pow(2, iteration);
+            double difference = Math.ceil(range / Math.pow(2, iteration));
             if (answer.equals("higher"))
                 guess += difference;
             else if (answer.equals("lower"))
                 guess -= difference;
             else if (answer.equals("correct")) {
-                System.out.println("Yes! I was correct! It only took me " + iteration + "times.");
+                System.out.println("Yes, I was correct! It only took me " + (iteration - 1) + " guesses.");
+                System.out.println("A linear search would have taken " + guess + " guesses.");
                 break;
             }
         }
