@@ -3,7 +3,7 @@ package com.company;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Objective2 {
+public class KKangGuessingGame {
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
