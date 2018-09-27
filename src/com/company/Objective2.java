@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Objective2 {
@@ -9,17 +10,56 @@ public class Objective2 {
 
         System.out.print("What is your name? ");
         String name = input.nextLine();
+        System.out.print("\nHello, " + name + ". We are going to guess numbers. First, enter a range: 1-10^");
 
-        System.out.print("Hello, " + name + ". We are going to guess numbers. First, enter a range: 1-10^");
-        int range = (int) Math.pow(10, input.nextInt());
-        input.nextLine();
+        int range;
 
-        System.out.println("Now, choose a role:");
-        System.out.println("1. Guess my number, or");
-        System.out.println("2. think of a number.");
-        System.out.print("What would you like to do, " + name + "? (Type the corresponding number to select) ");
-        int game = input.nextInt();
-        input.nextLine();
+        while (true) {
+            try {
+                int power = input.nextInt();
+
+                if (power < 0) {
+                    System.out.print("Please choose a positive number: 1-10^");
+                    input.nextLine();
+                    continue;
+                }
+
+                range = (int) Math.pow(10, power);
+                input.nextLine();
+                break;
+            }
+            catch (InputMismatchException e) {
+                System.out.print("Please enter an integer: 1-10^");
+                input.nextLine();
+            }
+        }
+
+        System.out.println("\nOkay, the range will be 1-" + range + ".");
+
+        System.out.println("\nNow, choose a role:");
+        System.out.println("1. Guess a number I think of, or");
+        System.out.println("2. think of a number that I will guess.");
+        System.out.print("What would you like to do, " + name + "? Enter the corresponding number: ");
+
+        int game;
+
+        while (true) {
+            try {
+                game = input.nextInt();
+                input.nextLine();
+
+                if (game != 1 && game != 2) {
+                    System.out.print("You may only choose two options (1 or 2): ");
+                    continue;
+                }
+
+                break;
+            }
+            catch (InputMismatchException e) {
+                System.out.print("That wasn't a number. Try again: ");
+                input.nextLine();
+            }
+        }
 
         if (game == 1) {
             // Objective 1
@@ -27,29 +67,32 @@ public class Objective2 {
             int num = (int) (Math.random() * range);
             int guess;
 
-            System.out.println("(Psst, " + name + ". The random number is " + num + ".)");
             System.out.print(name + ", try guessing a random number from 1-" + range + ": ");
 
             while (true) {
                 guess = input.nextInt();
 
                 if (guess == num) {
-                    System.out.println("Yes, " + name + ". The correct number is " + num + ".");
+                    System.out.println("Yes, the correct number is " + num + ". Good job, " + name + ".");
                     break;
                 }
-                else
-                    System.out.print(guess + " is not the correct number, " + name + ". Try again: ");
+                else {
+                    if (guess < num)
+                        System.out.print(guess + " is too low, " + name + ". Try again: ");
+                    else
+                        System.out.print(guess + " is too high, " + name + ". Try again: ");
+                }
             }
         }
-        else if (game == 2) {
+        else {
             // Objective 2
 
             int iteration = 1;
 
-            System.out.println("Okay, " + name + ". Think of a number from 1-" + range + " and I will try to guess it.");
+            System.out.println("\nOkay, " + name + ". Think of a number from 1-" + range + " and I will try to guess it.");
             System.out.println("If my guess is too low, say \"higher\".");
             System.out.println("If my guess is too high, say \"lower\".");
-            System.out.println("If my guess is correct, say \"correct\".");
+            System.out.println("If my guess is correct, say \"correct\".\n");
 
             int guess = range / 2;
 
@@ -72,9 +115,6 @@ public class Objective2 {
                     break;
                 }
             }
-        }
-        else {
-            System.out.println("Invalid input. Try again.");
         }
     }
 }
